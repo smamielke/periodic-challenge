@@ -1,29 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Periodic Challenge ⚛️</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <h1>Periodic Challenge ⚛️</h1>
-  <p id="score">Score: 0</p>
-  <div id="question"></div>
-  <div id="options"></div>
-  <button id="next">Next Question</button>
-  <p id="result"></p>
-  <button id="share" style="display:none;">Share Your Score</button>
+  <header>
+    <h1>Periodic Challenge ⚛️</h1>
+    <p class="tagline">Test your chemistry knowledge — one element at a time!</p>
+  </header>
 
+  <main class="quiz-card">
+    <div id="progress"></div>
+    <h2 id="question">Loading question...</h2>
+    <div id="options"></div>
+    <button id="next">Next Question</button>
+    <p id="result"></p>
+    <div id="end-screen" style="display:none;">
+      <p id="final-score"></p>
+      <button id="restart">Play Again 🔁</button>
+      <button id="share">Share Your Score</button>
+    </div>
+  </main>
 
-  <!-- Buy Me a Coffee -->
-  <a href="https://www.buymeacoffee.com/smamielke" target="_blank" class="coffee-btn">
-    ☕ Buy Me a Coffee
-  </a>
-
-  <div class="adsense-slot">
-    (Ad appears here after approval)
-  </div>
+  <footer>
+    <div class="footer-links">
+      <a href="https://www.buymeacoffee.com/YOURUSERNAME" target="_blank" class="coffee-btn">☕ Buy Me a Coffee</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+    </div>
+    <p>© 2025 Periodic Challenge · Designed with 💜 for science lovers</p>
+  </footer>
 
   <script src="script.js"></script>
 </body>
