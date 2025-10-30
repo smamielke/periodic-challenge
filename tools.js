@@ -52,6 +52,32 @@ window.onload = () => {
       output.textContent = "❌ Element not found. Try a valid name or symbol (e.g., Hydrogen, Na).";
     }
   };
+// --- TEMPERATURE CONVERTER ---
+document.getElementById("convert-temp").onclick = () => {
+  const value = parseFloat(document.getElementById("temp").value);
+  const from = document.getElementById("temp-from").value;
+  const to = document.getElementById("temp-to").value;
+  const output = document.getElementById("temp-result");
+
+  if (isNaN(value)) {
+    output.textContent = "Enter a valid number.";
+    return;
+  }
+
+  let tempC;
+  // Convert to Celsius first
+  if (from === "C") tempC = value;
+  else if (from === "F") tempC = (value - 32) * (5 / 9);
+  else if (from === "K") tempC = value - 273.15;
+
+  // Convert from Celsius to target
+  let result;
+  if (to === "C") result = tempC;
+  else if (to === "F") result = tempC * (9 / 5) + 32;
+  else if (to === "K") result = tempC + 273.15;
+
+  output.textContent = `${value}°${from} = ${result.toFixed(2)}°${to}`;
+};
 
   // --- PRESSURE CONVERTER ---
   document.getElementById("convert-pressure").onclick = () => {
