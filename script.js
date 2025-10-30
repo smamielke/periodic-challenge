@@ -104,6 +104,7 @@ function endQuiz() {
   if (!savedScore || score > savedScore) {
     localStorage.setItem("highscore-" + selectedMode, score);
   }
+updateHighScore(); // <--- Add this line
 }
 
 // ===== Restart =====
