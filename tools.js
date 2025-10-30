@@ -35,7 +35,8 @@ const elements = {
 // --- MOLAR MASS LOOKUP ---
 document.getElementById("calc").onclick = () => {
   const input = document.getElementById("element").value.trim().toLowerCase();
-  const output = document.getElementById("mass-result");
+  const output = document.getElementById("molar-result");
+
 
   for (const [symbol, [name, mass]] of Object.entries(elements)) {
     if (symbol.toLowerCase() === input || name.toLowerCase() === input) {
