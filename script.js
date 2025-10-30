@@ -32,6 +32,14 @@ function loadQuestion() {
     optionsEl.innerHTML = "";
     nextBtn.style.display = "none";
     resultEl.textContent = `Final Score: ${score}/${quiz.length}`;
+    const shareBtn = document.getElementById("share");
+shareBtn.style.display = "inline-block";
+shareBtn.onclick = () => {
+  const text = `I scored ${score}/${quiz.length} on the Periodic Challenge! ⚛️`;
+  const url = window.location.href;
+  window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`);
+};
+
     return;
   }
   const current = quiz[index];
