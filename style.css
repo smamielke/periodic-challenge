@@ -326,3 +326,30 @@ footer {
 .tool-card button:hover {
   opacity: 0.9;
 }
+#equationInput {
+  width: 80%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  font-size: 1em;
+}
+
+button {
+  background: linear-gradient(to right, #a100ff, #ff00aa);
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+.result {
+  font-weight: bold;
+  margin-top: 10px;
+}
