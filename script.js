@@ -1,4 +1,4 @@
-// ---- QUIZ QUESTIONS ----
+// === QUIZ DATA ===
 let quiz = [
   { q: "What is the symbol for Sodium?", options: ["So","Sn","Na","S"], correct: "Na" },
   { q: "Which element has atomic number 1?", options: ["Oxygen","Nitrogen","Hydrogen","Helium"], correct: "Hydrogen" },
@@ -9,25 +9,32 @@ let quiz = [
   { q: "What is the chemical symbol for Potassium?", options: ["P", "K", "Po", "Pt"], correct: "K" },
   { q: "What is the only metal that is liquid at room temperature?", options: ["Mercury", "Gallium", "Sodium", "Lead"], correct: "Mercury" },
   { q: "Who created the periodic table?", options: ["Einstein", "Mendeleev", "Curie", "Dalton"], correct: "Mendeleev" },
-  { q: "Which gas is most abundant in Earth's atmosphere?", options: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Argon"], correct: "Nitrogen" },
-  { q: "Which element is used in thermometers?", options: ["Mercury", "Iron", "Silver", "Tin"], correct: "Mercury" },
-  { q: "Which element’s symbol is 'Cu'?", options: ["Calcium", "Cobalt", "Copper", "Carbon"], correct: "Copper" },
-  { q: "What does 'NaCl' stand for?", options: ["Baking Soda", "Sugar", "Salt", "Chalk"], correct: "Salt" },
-  { q: "Which element has the highest melting point?", options: ["Iron", "Tungsten", "Carbon", "Platinum"], correct: "Tungsten" },
-  { q: "What is the chemical symbol for Gold?", options: ["Gd", "Ag", "Au", "Go"], correct: "Au" }
+  { q: "Which gas is most abundant in Earth's atmosphere?", options: ["Oxygen","Nitrogen","Carbon Dioxide","Argon"], correct: "Nitrogen" },
+  { q: "Which element is used in thermometers?", options: ["Mercury","Iron","Silver","Tin"], correct: "Mercury" },
+  { q: "Which element’s symbol is 'Cu'?", options: ["Calcium","Cobalt","Copper","Carbon"], correct: "Copper" },
+  { q: "What does 'NaCl' stand for?", options: ["Baking Soda","Sugar","Salt","Chalk"], correct: "Salt" },
+  { q: "Which element has the highest melting point?", options: ["Iron","Tungsten","Carbon","Platinum"], correct: "Tungsten" },
+  { q: "What is the chemical symbol for Gold?", options: ["Gd","Ag","Au","Go"], correct: "Au" }
 ];
 
-// ---- QUIZ VARIABLES ----
-let index = 0;
-let score = 0;
+// === DOM ELEMENTS ===
 const questionEl = document.getElementById("question");
 const optionsEl = document.getElementById("options");
 const nextBtn = document.getElementById("next");
 const resultEl = document.getElementById("result");
-const scoreEl = document.getElementById("score");
-const shareBtn = document.getElementById("share") || document.createElement("button");
+const progressEl = document.getElementById("progress");
+const endScreen = document.getElementById("end-screen");
+const finalScoreEl = document.getElementById("final-score");
+const restartBtn = document.getElementById("restart");
+const shareBtn = document.getElementById("share");
+const factEl = document.getElementById("fact");
+const correctSound = document.getElementById("correct-sound");
+const wrongSound = document.getElementById("wrong-sound");
 
-// ---- SHUFFLE QUESTIONS EACH TIME ----
+let index = 0;
+let score = 0;
+
+// === SHUFFLE FUNCTION ===
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -36,36 +43,16 @@ function shuffle(array) {
 }
 shuffle(quiz);
 
-// ---- LOAD QUESTIONS ----
+// === LOAD QUESTION ===
 function loadQuestion() {
   if (index >= quiz.length) {
-    questionEl.textContent = "🎉 Quiz complete!";
-    optionsEl.innerHTML = "";
-    nextBtn.style.display = "none";
-    resultEl.textContent = `Final Score: ${score}/${quiz.length}`;
-
-    // Show Share button
-    shareBtn.style.display = "inline-block";
-    shareBtn.id = "share";
-    shareBtn.textContent = "Share Your Score";
-    shareBtn.onclick = () => {
-      const text = `I scored ${score}/${quiz.length} on the Periodic Challenge! ⚛️`;
-      const url = window.location.href;
-      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`);
-    };
-    resultEl.appendChild(shareBtn);
-
-    // Add "Play Again" button
-    const againBtn = document.createElement("button");
-    againBtn.textContent = "Play Again 🔁";
-    againBtn.onclick = restartQuiz;
-    resultEl.appendChild(document.createElement("br"));
-    resultEl.appendChild(againBtn);
+    showEndScreen();
     return;
   }
-
   const current = quiz[index];
+  progressEl.textContent = `Question ${index + 1} of ${quiz.length}`;
   questionEl.textContent = current.q;
+  questionEl.classList.add("fade-in");
   optionsEl.innerHTML = "";
 
   current.options.forEach(option => {
@@ -74,48 +61,80 @@ function loadQuestion() {
     btn.onclick = () => checkAnswer(btn, option, current.correct);
     optionsEl.appendChild(btn);
   });
-
   resultEl.textContent = "";
 }
 
-// ---- CHECK ANSWER ----
+// === CHECK ANSWER ===
 function checkAnswer(button, selected, correct) {
   const allButtons = optionsEl.querySelectorAll("button");
-
-  // Disable all buttons after one click
   allButtons.forEach(b => b.disabled = true);
 
   if (selected === correct) {
     score++;
-    button.style.backgroundColor = "green";
+    button.style.backgroundColor = "#4CAF50";
     resultEl.textContent = "✅ Correct!";
+    correctSound.play();
   } else {
-    button.style.backgroundColor = "red";
-    resultEl.textContent = `❌ Wrong! The correct answer was ${correct}`;
-    // highlight correct answer
+    button.style.backgroundColor = "#e63946";
+    resultEl.textContent = `❌ Wrong! Correct answer: ${correct}`;
+    wrongSound.play();
     allButtons.forEach(b => {
-      if (b.textContent === correct) b.style.backgroundColor = "green";
+      if (b.textContent === correct) b.style.backgroundColor = "#4CAF50";
     });
   }
-
-  scoreEl.textContent = `Score: ${score}`;
 }
 
-// ---- NEXT QUESTION ----
+// === NEXT ===
 nextBtn.onclick = () => {
   index++;
   loadQuestion();
 };
 
-// ---- RESTART QUIZ ----
-function restartQuiz() {
-  score = 0;
-  index = 0;
-  scoreEl.textContent = `Score: ${score}`;
-  nextBtn.style.display = "inline-block";
-  shuffle(quiz);
-  loadQuestion();
+// === END SCREEN ===
+function showEndScreen() {
+  questionEl.style.display = "none";
+  optionsEl.style.display = "none";
+  nextBtn.style.display = "none";
+  resultEl.style.display = "none";
+  progressEl.style.display = "none";
+  endScreen.style.display = "block";
+  finalScoreEl.textContent = `You scored ${score} out of ${quiz.length}!`;
+
+  shareBtn.onclick = () => {
+    const text = `I scored ${score}/${quiz.length} on the Periodic Challenge! ⚛️`;
+    const url = window.location.href;
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`);
+  };
 }
 
-// ---- START ----
+// === RESTART ===
+restartBtn.onclick = () => {
+  index = 0;
+  score = 0;
+  shuffle(quiz);
+  questionEl.style.display = "";
+  optionsEl.style.display = "";
+  nextBtn.style.display = "";
+  resultEl.style.display = "";
+  progressEl.style.display = "";
+  endScreen.style.display = "none";
+  loadQuestion();
+};
+
+// === FUN FACT OF THE DAY ===
+const facts = [
+  "Hydrogen is the most abundant element in the universe.",
+  "Gold is so soft it can be molded by hand.",
+  "Mercury is the only metal that’s liquid at room temperature.",
+  "The smell of rain is caused by a compound called geosmin.",
+  "Helium was discovered on the Sun before it was found on Earth.",
+  "Bananas are naturally radioactive due to potassium-40!",
+  "Diamonds are made entirely of carbon atoms.",
+  "Neon lights contain gases other than neon to create different colors.",
+  "Water expands when it freezes — most substances shrink.",
+  "The periodic table grows — new elements are still being discovered!"
+];
+factEl.textContent = facts[Math.floor(Math.random() * facts.length)];
+
+// === START ===
 loadQuestion();
