@@ -226,3 +226,55 @@ footer {
   transform: translateY(-3px);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
+.tools-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  padding: 30px;
+  margin-top: 10px;
+}
+
+.tool-card {
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.tool-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.tool-card input, .tool-card select {
+  width: 80%;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1em;
+}
+
+.tool-card button {
+  background: linear-gradient(135deg, #7b2ff7, #f107a3);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: opacity 0.3s;
+}
+
+.tool-card button:hover {
+  opacity: 0.85;
+}
+
+.tool-card p {
+  margin-top: 12px;
+  font-weight: bold;
+  color: #222;
+}
