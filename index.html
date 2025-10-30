@@ -15,7 +15,7 @@
 
   <main class="quiz-card">
     <div id="progress"></div>
-    <h2 id="question">Loading question...</h2>
+    <h2 id="question" class="fade-in">Loading question...</h2>
     <div id="options"></div>
     <button id="next">Next Question</button>
     <p id="result"></p>
@@ -26,6 +26,11 @@
     </div>
   </main>
 
+  <section class="fact-card">
+    <h3>🔬 Fun Fact of the Day</h3>
+    <p id="fact"></p>
+  </section>
+
   <footer>
     <div class="footer-links">
       <a href="https://www.buymeacoffee.com/YOURUSERNAME" target="_blank" class="coffee-btn">☕ Buy Me a Coffee</a>
@@ -34,6 +39,9 @@
     </div>
     <p>© 2025 Periodic Challenge · Designed with 💜 for science lovers</p>
   </footer>
+
+  <audio id="correct-sound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_14e1cfb6d7.mp3?filename=correct-answer-tone-1-224507.mp3"></audio>
+  <audio id="wrong-sound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_9fa466a7db.mp3?filename=wrong-answer-buzzer-1-183896.mp3"></audio>
 
   <script src="script.js"></script>
 </body>
