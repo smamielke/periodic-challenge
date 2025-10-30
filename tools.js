@@ -31,6 +31,41 @@ const elements = {
   Nh: ["Nihonium", 286], Fl: ["Flerovium", 289], Mc: ["Moscovium", 290], Lv: ["Livermorium", 293],
   Ts: ["Tennessine", 294], Og: ["Oganesson", 294]
 };
+// --- PRESSURE CONVERTER ---
+document.getElementById("convert-pressure").onclick = () => {
+  const value = parseFloat(document.getElementById("pressure").value);
+  const from = document.getElementById("pressure-from").value;
+  const to = document.getElementById("pressure-to").value;
+  if (isNaN(value)) return (document.getElementById("pressure-result").textContent = "Enter a valid number.");
+
+  const conversion = { Pa: 1, atm: 101325, mmHg: 133.322 };
+  const result = value * (conversion[from] / conversion[to]);
+  document.getElementById("pressure-result").textContent = `${value} ${from} = ${result.toFixed(3)} ${to}`;
+};
+
+// --- VOLUME CONVERTER ---
+document.getElementById("convert-volume").onclick = () => {
+  const value = parseFloat(document.getElementById("volume").value);
+  const from = document.getElementById("volume-from").value;
+  const to = document.getElementById("volume-to").value;
+  if (isNaN(value)) return (document.getElementById("volume-result").textContent = "Enter a valid number.");
+
+  const conversion = { L: 1, mL: 0.001, gal: 3.78541 };
+  const result = value * (conversion[from] / conversion[to]);
+  document.getElementById("volume-result").textContent = `${value} ${from} = ${result.toFixed(3)} ${to}`;
+};
+
+// --- SPEED CONVERTER ---
+document.getElementById("convert-speed").onclick = () => {
+  const value = parseFloat(document.getElementById("speed").value);
+  const from = document.getElementById("speed-from").value;
+  const to = document.getElementById("speed-to").value;
+  if (isNaN(value)) return (document.getElementById("speed-result").textContent = "Enter a valid number.");
+
+  const conversion = { "m/s": 1, "km/h": 0.277778, "mph": 0.44704 };
+  const result = value * (conversion[from] / conversion[to]);
+  document.getElementById("speed-result").textContent = `${value} ${from} = ${result.toFixed(3)} ${to}`;
+};
 
 // --- MOLAR MASS LOOKUP: Symbol OR Name ---
 document.getElementById("calc").onclick = () => {
