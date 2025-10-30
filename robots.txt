@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://smamielke.github.io/periodic-challenge/sitemap.xml
