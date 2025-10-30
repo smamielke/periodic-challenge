@@ -24,6 +24,28 @@ header {
 
 /* === QUIZ CARD === */
 .quiz-card {
+  .mode-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.mode-btn {
+  background: linear-gradient(135deg, #7e3ff2, #4b0082);
+  color: #fff;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.mode-btn:hover {
+  transform: scale(1.05);
+}
+
   background: rgba(255,255,255,0.9);
   border-radius: 20px;
   box-shadow: 0 8px 30px rgba(0,0,0,0.15);
