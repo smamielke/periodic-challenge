@@ -1,32 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Learn Chemistry 📚 | Periodic Challenge</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learn Chemistry | Periodic Challenge</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #f0f8ff, #e6f7ff);
+      margin: 0;
+      color: #222;
+    }
+    header {
+      background: #004b8d;
+      color: white;
+      padding: 30px;
+      text-align: center;
+      font-size: 1.6rem;
+    }
+    main {
+      padding: 30px;
+      max-width: 1000px;
+      margin: auto;
+    }
+    h2 {
+      color: #004b8d;
+      border-bottom: 3px solid #0099ff;
+      padding-bottom: 5px;
+    }
+    .section {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .fact-box {
+      background: #e6f4ea;
+      padding: 10px 15px;
+      border-left: 5px solid #2e7d32;
+      margin-top: 10px;
+      font-style: italic;
+    }
+    #fact-generator {
+      background: #0077cc;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 16px;
+      cursor: pointer;
+    }
+    #fact-generator:hover {
+      background: #005fa3;
+    }
+    .glossary {
+      margin-top: 20px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    #result {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 8px;
+      background: #fff7e6;
+      border-left: 5px solid #ffb300;
+    }
+    footer {
+      text-align: center;
+      margin: 30px 0;
+    }
+    footer a {
+      background: #004b8d;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+    }
+    footer a:hover {
+      background: #006ad1;
+    }
+  </style>
 </head>
 <body>
   <header>
-    <h1>📚 Learn Chemistry</h1>
-    <p>Science explained simply</p>
+    <h1>🧪 Learn Chemistry</h1>
+    <p>Explore the building blocks of our universe.</p>
   </header>
 
-  <main class="quiz-card">
-    <h2>Core Concepts</h2>
-    <ul class="learn-list">
-      <li><strong>Atoms:</strong> The basic building blocks of matter.</li>
-      <li><strong>Elements:</strong> Pure substances made of one type of atom.</li>
-      <li><strong>Bonds:</strong> The way atoms connect to form molecules.</li>
-      <li><strong>Reactions:</strong> When atoms rearrange to form new substances.</li>
-      <li><strong>Energy:</strong> The power behind all chemical change.</li>
-    </ul>
+  <main>
+    <section class="section">
+      <h2>1. Atomic Structure</h2>
+      <p>Atoms are made up of three main particles — <b>protons</b>, <b>neutrons</b>, and <b>electrons</b>. 
+      Protons and neutrons form the nucleus, while electrons orbit in energy levels.</p>
+      <div class="fact-box">💡 Fun Fact: If an atom were the size of a stadium, its nucleus would be smaller than a marble!</div>
+    </section>
 
-    <a href="index.html" class="coffee-btn">🏠 Back Home</a>
+    <section class="section">
+      <h2>2. Chemical Bonding</h2>
+      <p>Atoms form bonds to become more stable. There are three main types of bonds:
+      <ul>
+        <li><b>Ionic:</b> transfer of electrons (e.g., NaCl)</li>
+        <li><b>Covalent:</b> sharing of electrons (e.g., H₂O)</li>
+        <li><b>Metallic:</b> a “sea” of electrons in metals (e.g., Cu)</li>
+      </ul></p>
+    </section>
+
+    <section class="section">
+      <h2>3. Periodic Trends</h2>
+      <p>The periodic table isn’t random — it’s organized by atomic number and properties:
+        <ul>
+          <li><b>Electronegativity</b> increases across a period.</li>
+          <li><b>Atomic radius</b> decreases across a period, increases down a group.</li>
+          <li><b>Ionization energy</b> increases across a period.</li>
+        </ul>
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>4. States of Matter</h2>
+      <p>All matter exists in different states depending on temperature and pressure:
+      <ul>
+        <li>Solid — fixed shape and volume</li>
+        <li>Liquid — fixed volume, takes container’s shape</li>
+        <li>Gas — expands to fill space</li>
+        <li>Plasma — charged gas found in stars</li>
+      </ul></p>
+    </section>
+
+    <section class="section">
+      <h2>5. Reaction Basics</h2>
+      <p>Chemical reactions involve breaking and forming bonds. The law of conservation of mass means the same number of atoms exist before and after a reaction.</p>
+      <div class="fact-box">⚛️ Example: 2H₂ + O₂ → 2H₂O</div>
+    </section>
+
+    <section class="section">
+      <h2>Did You Know?</h2>
+      <button id="fact-generator">Generate a Random Fact</button>
+      <p id="random-fact" class="fact-box"></p>
+    </section>
+
+    <section class="section glossary">
+      <h2>Mini Glossary Search</h2>
+      <input type="text" id="glossary-input" placeholder="Type a chemistry term (e.g., valence)">
+      <div id="result"></div>
+    </section>
   </main>
 
   <footer>
-    <p>© 2025 Periodic Challenge · Made with 💜 by Sam Mielke</p>
+    <a href="index.html">🏠 Back Home</a>
   </footer>
+
+  <script>
+    // --- RANDOM FACT GENERATOR ---
+    const facts = [
+      "Water expands when it freezes — most substances contract.",
+      "Diamond and graphite are both made of carbon atoms, but arranged differently.",
+      "Helium is the only element that cannot solidify under normal pressure.",
+      "Bananas are slightly radioactive due to potassium-40.",
+      "Mercury is the only metal that is liquid at room temperature."
+    ];
+    document.getElementById("fact-generator").onclick = () => {
+      const fact = facts[Math.floor(Math.random() * facts.length)];
+      document.getElementById("random-fact").textContent = fact;
+    };
+
+    // --- GLOSSARY SEARCH ---
+    const glossary = {
+      atom: "The smallest unit of matter that retains chemical properties.",
+      molecule: "Two or more atoms bonded together.",
+      valence: "The combining capacity of an element.",
+      isotope: "Atoms of the same element with different numbers of neutrons.",
+      catalyst: "A substance that speeds up a reaction without being consumed.",
+      ion: "An atom that has gained or lost electrons.",
+      acid: "A substance that donates hydrogen ions (H⁺) in solution.",
+      base: "A substance that accepts hydrogen ions (H⁺) or releases OH⁻.",
+      covalent: "A bond formed by sharing electrons between atoms.",
+      ionic: "A bond formed by transferring electrons between atoms."
+    };
+    document.getElementById("glossary-input").addEventListener("input", e => {
+      const term = e.target.value.trim().toLowerCase();
+      const def = glossary[term];
+      document.getElementById("result").textContent = def ? def : "No definition found.";
+    });
+  </script>
 </body>
 </html>
