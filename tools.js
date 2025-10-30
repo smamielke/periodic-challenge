@@ -1,4 +1,4 @@
-// --- FULL PERIODIC TABLE DATABASE (symbol, name, mass) ---
+// ------------------- PERIODIC TABLE DATA -------------------
 const elements = {
   H: ["Hydrogen", 1.008], He: ["Helium", 4.0026], Li: ["Lithium", 6.94], Be: ["Beryllium", 9.0122],
   B: ["Boron", 10.81], C: ["Carbon", 12.011], N: ["Nitrogen", 14.007], O: ["Oxygen", 15.999],
@@ -32,11 +32,11 @@ const elements = {
   Ts: ["Tennessine", 294], Og: ["Oganesson", 294]
 };
 
-// --- MOLAR MASS LOOKUP ---
-document.getElementById("calc").onclick = () => {
+// ------------------- MOLAR MASS LOOKUP -------------------
+document.getElementById("calc").addEventListener("click", () => {
   const input = document.getElementById("element").value.trim().toLowerCase();
   const output = document.getElementById("molar-result");
-
+  output.textContent = "";
 
   for (const [symbol, [name, mass]] of Object.entries(elements)) {
     if (symbol.toLowerCase() === input || name.toLowerCase() === input) {
@@ -44,93 +44,92 @@ document.getElementById("calc").onclick = () => {
       return;
     }
   }
-  output.textContent = "❌ Element not found. Try Hydrogen or Na.";
-};
 
-// --- TEMPERATURE CONVERTER ---
-document.getElementById("convert-temp").onclick = () => {
+  output.textContent = "❌ Element not found. Try entering 'Oxygen' or 'Na'.";
+});
+
+// ------------------- TEMPERATURE CONVERTER -------------------
+document.getElementById("convert-temp").addEventListener("click", () => {
   const v = parseFloat(document.getElementById("temp").value);
   const f = document.getElementById("temp-from").value;
   const t = document.getElementById("temp-to").value;
   const r = document.getElementById("temp-result");
   if (isNaN(v)) return (r.textContent = "Enter a valid number.");
-  let c;
-  if (f === "C") c = v;
-  else if (f === "F") c = (v - 32) * 5 / 9;
-  else c = v - 273.15;
+
+  let c = f === "C" ? v : f === "F" ? (v - 32) * 5 / 9 : v - 273.15;
   let out = t === "C" ? c : t === "F" ? c * 9 / 5 + 32 : c + 273.15;
   r.textContent = `${v}°${f} = ${out.toFixed(2)}°${t}`;
-};
+});
 
-// --- PRESSURE CONVERTER ---
-const pressure = { Pa: 1, atm: 101325, mmHg: 133.322 };
-document.getElementById("convert-pressure").onclick = () => {
+// ------------------- PRESSURE CONVERTER -------------------
+const pressureUnits = { Pa: 1, atm: 101325, mmHg: 133.322 };
+document.getElementById("convert-pressure").addEventListener("click", () => {
   const v = parseFloat(document.getElementById("pressure").value);
   const f = document.getElementById("pressure-from").value;
   const t = document.getElementById("pressure-to").value;
   const r = document.getElementById("pressure-result");
   if (isNaN(v)) return (r.textContent = "Enter a valid number.");
-  const out = v * (pressure[f] / pressure[t]);
+  const out = v * (pressureUnits[f] / pressureUnits[t]);
   r.textContent = `${v} ${f} = ${out.toFixed(3)} ${t}`;
-};
+});
 
-// --- VOLUME CONVERTER ---
-const volume = { L: 1, mL: 0.001, gal: 3.78541 };
-document.getElementById("convert-volume").onclick = () => {
+// ------------------- VOLUME CONVERTER -------------------
+const volumeUnits = { L: 1, mL: 0.001, gal: 3.78541 };
+document.getElementById("convert-volume").addEventListener("click", () => {
   const v = parseFloat(document.getElementById("volume").value);
   const f = document.getElementById("volume-from").value;
   const t = document.getElementById("volume-to").value;
   const r = document.getElementById("volume-result");
   if (isNaN(v)) return (r.textContent = "Enter a valid number.");
-  const out = v * (volume[f] / volume[t]);
+  const out = v * (volumeUnits[f] / volumeUnits[t]);
   r.textContent = `${v} ${f} = ${out.toFixed(3)} ${t}`;
-};
+});
 
-// --- SPEED CONVERTER ---
-const speed = { "m/s": 1, "km/h": 0.277778, "mph": 0.44704 };
-document.getElementById("convert-speed").onclick = () => {
+// ------------------- SPEED CONVERTER -------------------
+const speedUnits = { "m/s": 1, "km/h": 0.277778, "mph": 0.44704 };
+document.getElementById("convert-speed").addEventListener("click", () => {
   const v = parseFloat(document.getElementById("speed").value);
   const f = document.getElementById("speed-from").value;
   const t = document.getElementById("speed-to").value;
   const r = document.getElementById("speed-result");
   if (isNaN(v)) return (r.textContent = "Enter a valid number.");
-  const out = v * (speed[f] / speed[t]);
+  const out = v * (speedUnits[f] / speedUnits[t]);
   r.textContent = `${v} ${f} = ${out.toFixed(3)} ${t}`;
-};
+});
 
-// --- ENERGY CONVERTER ---
-const energy = { J: 1, cal: 4.184, eV: 1.602e-19 };
-document.getElementById("convert-energy").onclick = () => {
+// ------------------- ENERGY CONVERTER -------------------
+const energyUnits = { J: 1, cal: 4.184, eV: 1.602e-19 };
+document.getElementById("convert-energy").addEventListener("click", () => {
   const v = parseFloat(document.getElementById("energy").value);
   const f = document.getElementById("energy-from").value;
   const t = document.getElementById("energy-to").value;
   const r = document.getElementById("energy-result");
   if (isNaN(v)) return (r.textContent = "Enter a valid number.");
-  const out = v * (energy[f] / energy[t]);
+  const out = v * (energyUnits[f] / energyUnits[t]);
   const formatted = (t === "eV" || f === "eV") ? out.toExponential(3) : out.toFixed(3);
   r.textContent = `${v} ${f} = ${formatted} ${t}`;
-};
+});
 
-// --- MASS CONVERTER ---
-const mass = { g: 1, kg: 1000, lb: 453.592, oz: 28.3495 };
-document.getElementById("convert-mass").onclick = () => {
+// ------------------- MASS CONVERTER -------------------
+const massUnits = { g: 1, kg: 1000, lb: 453.592, oz: 28.3495 };
+document.getElementById("convert-mass").addEventListener("click", () => {
   const v = parseFloat(document.getElementById("mass").value);
   const f = document.getElementById("mass-from").value;
   const t = document.getElementById("mass-to").value;
   const r = document.getElementById("mass-result");
   if (isNaN(v)) return (r.textContent = "Enter a valid number.");
-  const out = v * (mass[f] / mass[t]);
+  const out = v * (massUnits[f] / massUnits[t]);
   r.textContent = `${v} ${f} = ${out.toFixed(3)} ${t}`;
-};
+});
 
-// --- LENGTH CONVERTER ---
-const length = { m: 1, cm: 0.01, km: 1000, in: 0.0254, ft: 0.3048, mi: 1609.34 };
-document.getElementById("convert-length").onclick = () => {
+// ------------------- LENGTH CONVERTER -------------------
+const lengthUnits = { m: 1, cm: 0.01, km: 1000, in: 0.0254, ft: 0.3048, mi: 1609.34 };
+document.getElementById("convert-length").addEventListener("click", () => {
   const v = parseFloat(document.getElementById("length").value);
   const f = document.getElementById("length-from").value;
   const t = document.getElementById("length-to").value;
   const r = document.getElementById("length-result");
   if (isNaN(v)) return (r.textContent = "Enter a valid number.");
-  const out = v * (length[f] / length[t]);
+  const out = v * (lengthUnits[f] / lengthUnits[t]);
   r.textContent = `${v} ${f} = ${out.toFixed(3)} ${t}`;
-};
+});
