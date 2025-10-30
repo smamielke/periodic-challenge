@@ -3,27 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Science Tools 🧮 | Periodic Challenge</title>
+  <title>Science Tools 🔬 | Periodic Challenge</title>
   <link rel="stylesheet" href="style.css">
-  <script src="tools.js" defer></script>
 </head>
 <body>
   <header>
-    <h1>🧮 Science Tools</h1>
-    <p>Useful chemistry and physics converters</p>
+    <h1>🧪 Science Tools</h1>
+    <p>Quick Chemistry & Physics Conversions</p>
   </header>
 
   <main class="tools-container">
+    <!-- Molar Mass Lookup -->
     <section class="tool-card">
       <h2>Molar Mass Lookup</h2>
-      <input type="text" id="element" placeholder="Enter element symbol (H, O, Na, etc)">
+      <input type="text" id="element" placeholder="Enter element (e.g., H, Na, Iron)">
       <button id="calc">Calculate</button>
       <p id="mass-result"></p>
     </section>
 
+    <!-- Temperature Converter -->
     <section class="tool-card">
       <h2>Temperature Converter</h2>
-      <input type="number" id="temp" placeholder="Enter value">
+      <input type="number" id="temp" placeholder="Enter temperature">
       <select id="temp-from">
         <option value="C">Celsius</option>
         <option value="F">Fahrenheit</option>
@@ -38,121 +39,65 @@
       <p id="temp-result"></p>
     </section>
 
+    <!-- Pressure Converter -->
     <section class="tool-card">
-      <h2>Distance Converter</h2>
-      <input type="number" id="dist" placeholder="Enter distance">
-      <select id="dist-from">
-        <option value="m">Meters</option>
-        <option value="km">Kilometers</option>
-        <option value="mi">Miles</option>
+      <h2>Pressure Converter</h2>
+      <input type="number" id="pressure" placeholder="Enter pressure">
+      <select id="pressure-from">
+        <option value="Pa">Pascals</option>
+        <option value="atm">Atmospheres</option>
+        <option value="mmHg">mmHg</option>
       </select>
-      <select id="dist-to">
-        <option value="m">Meters</option>
-        <option value="km">Kilometers</option>
-        <option value="mi">Miles</option>
+      <select id="pressure-to">
+        <option value="Pa">Pascals</option>
+        <option value="atm">Atmospheres</option>
+        <option value="mmHg">mmHg</option>
       </select>
-      <button id="convert-dist">Convert</button>
-      <p id="dist-result"></p>
+      <button id="convert-pressure">Convert</button>
+      <p id="pressure-result"></p>
     </section>
 
+    <!-- Volume Converter -->
     <section class="tool-card">
-      <h2>Mass Converter</h2>
-      <input type="number" id="mass" placeholder="Enter mass">
-      <select id="mass-from">
-        <option value="g">Grams</option>
-        <option value="kg">Kilograms</option>
-        <option value="lb">Pounds</option>
+      <h2>Volume Converter</h2>
+      <input type="number" id="volume" placeholder="Enter volume">
+      <select id="volume-from">
+        <option value="L">Liters</option>
+        <option value="mL">Milliliters</option>
+        <option value="gal">Gallons</option>
       </select>
-      <select id="mass-to">
-        <option value="g">Grams</option>
-        <option value="kg">Kilograms</option>
-        <option value="lb">Pounds</option>
+      <select id="volume-to">
+        <option value="L">Liters</option>
+        <option value="mL">Milliliters</option>
+        <option value="gal">Gallons</option>
       </select>
-      <button id="convert-mass">Convert</button>
-      <p id="massconv-result"></p>
+      <button id="convert-volume">Convert</button>
+      <p id="volume-result"></p>
     </section>
 
+    <!-- Speed Converter -->
     <section class="tool-card">
-      <h2>Energy Converter</h2>
-      <input type="number" id="energy" placeholder="Enter energy">
-      <select id="energy-from">
-        <option value="J">Joules</option>
-        <option value="cal">Calories</option>
+      <h2>Speed Converter</h2>
+      <input type="number" id="speed" placeholder="Enter speed">
+      <select id="speed-from">
+        <option value="m/s">Meters/second</option>
+        <option value="km/h">Kilometers/hour</option>
+        <option value="mph">Miles/hour</option>
       </select>
-      <select id="energy-to">
-        <option value="J">Joules</option>
-        <option value="cal">Calories</option>
+      <select id="speed-to">
+        <option value="m/s">Meters/second</option>
+        <option value="km/h">Kilometers/hour</option>
+        <option value="mph">Miles/hour</option>
       </select>
-      <button id="convert-energy">Convert</button>
-      <p id="energy-result"></p>
+      <button id="convert-speed">Convert</button>
+      <p id="speed-result"></p>
     </section>
-<section class="tool-card">
-  
- <!-- PRESSURE CONVERTER -->
-<section class="tool-card">
-  <h2>Pressure Converter</h2>
-  <input type="number" id="pressure" placeholder="Enter pressure">
-  <select id="pressure-from">
-    <option value="Pa">Pascals</option>
-    <option value="atm">Atmospheres</option>
-    <option value="mmHg">mmHg</option>
-  </select>
-  <select id="pressure-to">
-    <option value="Pa">Pascals</option>
-    <option value="atm">Atmospheres</option>
-    <option value="mmHg">mmHg</option>
-  </select>
-  <button id="convert-pressure">Convert</button>
-  <p id="pressure-result"></p>
-</section>
-
-<!-- VOLUME CONVERTER -->
-<section class="tool-card">
-  <h2>Volume Converter</h2>
-  <input type="number" id="volume" placeholder="Enter volume">
-  <select id="volume-from">
-    <option value="L">Liters</option>
-    <option value="mL">Milliliters</option>
-    <option value="gal">Gallons</option>
-  </select>
-  <select id="volume-to">
-    <option value="L">Liters</option>
-    <option value="mL">Milliliters</option>
-    <option value="gal">Gallons</option>
-  </select>
-  <button id="convert-volume">Convert</button>
-  <p id="volume-result"></p>
-</section>
-
-<!-- SPEED CONVERTER -->
-<section class="tool-card">
-  <h2>Speed Converter</h2>
-  <input type="number" id="speed" placeholder="Enter speed">
-  <select id="speed-from">
-    <option value="m/s">Meters/second</option>
-    <option value="km/h">Kilometers/hour</option>
-    <option value="mph">Miles/hour</option>
-  </select>
-  <select id="speed-to">
-    <option value="m/s">Meters/second</option>
-    <option value="km/h">Kilometers/hour</option>
-    <option value="mph">Miles/hour</option>
-  </select>
-  <button id="convert-speed">Convert</button>
-  <p id="speed-result"></p>
-</section>
-
-<!-- Make sure this is at the VERY END of your body -->
-<script src="tools.js"></script>
-</body>
-</html>
-
-
-    <a href="index.html" class="coffee-btn">🏠 Back Home</a>
   </main>
 
   <footer>
-    <p>© 2025 Periodic Challenge · Designed with 💜 by Sam Mielke</p>
+    <a href="index.html" class="coffee-btn">☕ Back Home</a>
   </footer>
+
+  <script src="tools.js"></script>
 </body>
 </html>
