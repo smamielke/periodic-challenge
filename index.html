@@ -10,40 +10,41 @@
 <body>
   <header>
     <h1>Periodic Challenge ⚛️</h1>
-    <p class="tagline">Test your chemistry knowledge — one element at a time!</p>
+    <p>Test your chemistry knowledge — one element at a time!</p>
   </header>
 
-  <main class="quiz-card">
-    <div id="progress"></div>
-    <h2 id="question" class="fade-in">Loading question...</h2>
-    <div id="options"></div>
-    <button id="next">Next Question</button>
-    <p id="result"></p>
-    <div id="end-screen" style="display:none;">
-      <p id="final-score"></p>
-      <button id="restart">Play Again 🔁</button>
-      <button id="share">Share Your Score</button>
+  <!-- Start Screen -->
+  <main id="start-screen" class="quiz-card">
+    <h2>Select Difficulty</h2>
+    <div class="mode-buttons">
+      <button class="mode-btn" data-mode="easy">Easy</button>
+      <button class="mode-btn" data-mode="medium">Medium</button>
+      <button class="mode-btn" data-mode="hard">Hard</button>
     </div>
   </main>
 
-  <section class="fact-card">
-    <h3>🔬 Fun Fact of the Day</h3>
-    <p id="fact"></p>
-  </section>
+  <!-- Quiz Section -->
+  <main id="quiz-section" class="quiz-card" style="display:none;">
+    <p id="progress"></p>
+    <h2 id="question">Loading question...</h2>
+    <div id="options"></div>
+    <p id="result"></p>
+    <button id="next">Next Question</button>
+    <p id="high-score"></p>
+  </main>
+
+  <!-- End Screen -->
+  <main id="end-screen" class="quiz-card" style="display:none;">
+    <h2>Quiz Complete!</h2>
+    <p id="final-score"></p>
+    <button id="restart">Play Again</button>
+  </main>
 
   <footer>
-    <div class="footer-links">
-      <a href="https://www.buymeacoffee.com/smamielke" target="_blank" class="coffee-btn">☕ Buy Me a Coffee</a>
-      <a href="about.html">About</a>
-<a href="contact.html">Contact</a>
-
-    </div>
     <p>© 2025 Periodic Challenge · Designed with 💜 for science lovers</p>
   </footer>
 
-  <audio id="correct-sound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_14e1cfb6d7.mp3?filename=correct-answer-tone-1-224507.mp3"></audio>
-  <audio id="wrong-sound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_9fa466a7db.mp3?filename=wrong-answer-buzzer-1-183896.mp3"></audio>
-
   <script src="script.js"></script>
 </body>
+
 </html>
