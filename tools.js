@@ -1,3 +1,5 @@
+window.onerror = (msg, src, line) => alert(`Error: ${msg} at ${line}`);
+
 window.onload = () => {
   // --- FULL PERIODIC TABLE DATABASE (symbol, name, mass) ---
   const elements = {
