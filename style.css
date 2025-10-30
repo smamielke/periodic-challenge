@@ -1,0 +1,40 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f7fa;
+  text-align: center;
+  padding: 20px;
+}
+h1 {
+  color: #4b0082;
+}
+button {
+  margin: 10px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  background: #4b0082;
+  color: white;
+  cursor: pointer;
+}
+button:hover {
+  background: #663399;
+}
+.coffee-btn {
+  display: inline-block;
+  background: #ffdd00;
+  color: black;
+  padding: 10px 20px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: bold;
+  margin-top: 20px;
+}
+.adsense-slot {
+  margin-top: 20px;
+  height: 100px;
+  background: #eee;
+  text-align: center;
+  line-height: 100px;
+  color: gray;
+  border-radius: 10px;
+}
