@@ -10,21 +10,88 @@
 <body>
   <header>
     <h1>🧮 Science Tools</h1>
-    <p>Simple converters and calculators</p>
+    <p>Useful chemistry and physics converters</p>
   </header>
 
-  <main class="quiz-card">
-    <h2>Molar Mass Calculator</h2>
-    <input type="text" id="element" placeholder="Enter element (H, O, Na, etc)">
-    <button id="calc">Calculate</button>
-    <p id="mass-result"></p>
+  <main class="tools-container">
+    <section class="tool-card">
+      <h2>Molar Mass Lookup</h2>
+      <input type="text" id="element" placeholder="Enter element symbol (H, O, Na, etc)">
+      <button id="calc">Calculate</button>
+      <p id="mass-result"></p>
+    </section>
 
-    <h2>Temperature Converter</h2>
-    <input type="number" id="celsius" placeholder="Celsius">
-    <button id="convert">Convert to Kelvin</button>
-    <p id="temp-result"></p>
+    <section class="tool-card">
+      <h2>Temperature Converter</h2>
+      <input type="number" id="temp" placeholder="Enter value">
+      <select id="temp-from">
+        <option value="C">Celsius</option>
+        <option value="F">Fahrenheit</option>
+        <option value="K">Kelvin</option>
+      </select>
+      <select id="temp-to">
+        <option value="C">Celsius</option>
+        <option value="F">Fahrenheit</option>
+        <option value="K">Kelvin</option>
+      </select>
+      <button id="convert-temp">Convert</button>
+      <p id="temp-result"></p>
+    </section>
+
+    <section class="tool-card">
+      <h2>Distance Converter</h2>
+      <input type="number" id="dist" placeholder="Enter distance">
+      <select id="dist-from">
+        <option value="m">Meters</option>
+        <option value="km">Kilometers</option>
+        <option value="mi">Miles</option>
+      </select>
+      <select id="dist-to">
+        <option value="m">Meters</option>
+        <option value="km">Kilometers</option>
+        <option value="mi">Miles</option>
+      </select>
+      <button id="convert-dist">Convert</button>
+      <p id="dist-result"></p>
+    </section>
+
+    <section class="tool-card">
+      <h2>Mass Converter</h2>
+      <input type="number" id="mass" placeholder="Enter mass">
+      <select id="mass-from">
+        <option value="g">Grams</option>
+        <option value="kg">Kilograms</option>
+        <option value="lb">Pounds</option>
+      </select>
+      <select id="mass-to">
+        <option value="g">Grams</option>
+        <option value="kg">Kilograms</option>
+        <option value="lb">Pounds</option>
+      </select>
+      <button id="convert-mass">Convert</button>
+      <p id="massconv-result"></p>
+    </section>
+
+    <section class="tool-card">
+      <h2>Energy Converter</h2>
+      <input type="number" id="energy" placeholder="Enter energy">
+      <select id="energy-from">
+        <option value="J">Joules</option>
+        <option value="cal">Calories</option>
+      </select>
+      <select id="energy-to">
+        <option value="J">Joules</option>
+        <option value="cal">Calories</option>
+      </select>
+      <button id="convert-energy">Convert</button>
+      <p id="energy-result"></p>
+    </section>
 
     <a href="index.html" class="coffee-btn">🏠 Back Home</a>
   </main>
+
+  <footer>
+    <p>© 2025 Periodic Challenge · Designed with 💜 by Sam Mielke</p>
+  </footer>
 </body>
 </html>
