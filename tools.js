@@ -77,24 +77,35 @@ document.getElementById("calc").onclick = () => {
     speed-result.textContent = `${v} ${f} = ${(v * S[f]/S[t]).toFixed(3)} ${t}`;
   };
 
-  // --- ENERGY ---
+    // --- ENERGY ---
   const E = { J: 1, cal: 4.184, eV: 1.602e-19 };
-  convert-energy.onclick = () => {
-    const v = parseFloat(energy.value), f = energy-from.value, t = energy-to.value;
-    energy-result.textContent = `${v} ${f} = ${(v * E[f]/E[t]).toExponential(3)} ${t}`;
+  document.getElementById("convert-energy").onclick = () => {
+    const v = parseFloat(document.getElementById("energy").value);
+    const f = document.getElementById("energy-from").value;
+    const t = document.getElementById("energy-to").value;
+    if (isNaN(v)) return document.getElementById("energy-result").textContent = "Enter a valid number.";
+    const r = v * (E[f] / E[t]);
+    document.getElementById("energy-result").textContent = `${v} ${f} = ${r.toExponential(3)} ${t}`;
   };
 
   // --- MASS ---
   const M = { g: 1, kg: 1000, lb: 453.592, oz: 28.3495 };
-  convert-mass.onclick = () => {
-    const v = parseFloat(mass.value), f = mass-from.value, t = mass-to.value;
-    mass-result.textContent = `${v} ${f} = ${(v * M[f]/M[t]).toFixed(3)} ${t}`;
+  document.getElementById("convert-mass").onclick = () => {
+    const v = parseFloat(document.getElementById("mass").value);
+    const f = document.getElementById("mass-from").value;
+    const t = document.getElementById("mass-to").value;
+    if (isNaN(v)) return document.getElementById("mass-result").textContent = "Enter a valid number.";
+    const r = v * (M[f] / M[t]);
+    document.getElementById("mass-result").textContent = `${v} ${f} = ${r.toFixed(3)} ${t}`;
   };
 
   // --- LENGTH ---
   const L = { m: 1, cm: 0.01, km: 1000, in: 0.0254, ft: 0.3048 };
-  convert-length.onclick = () => {
-    const v = parseFloat(length.value), f = length-from.value, t = length-to.value;
-    length-result.textContent = `${v} ${f} = ${(v * L[f]/L[t]).toFixed(3)} ${t}`;
+  document.getElementById("convert-length").onclick = () => {
+    const v = parseFloat(document.getElementById("length").value);
+    const f = document.getElementById("length-from").value;
+    const t = document.getElementById("length-to").value;
+    if (isNaN(v)) return document.getElementById("length-result").textContent = "Enter a valid number.";
+    const r = v * (L[f] / L[t]);
+    document.getElementById("length-result").textContent = `${v} ${f} = ${r.toFixed(3)} ${t}`;
   };
-};
