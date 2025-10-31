@@ -25,6 +25,7 @@ main {
 h1 {
   text-align: center;
   font-size: 2.4rem;
+  margin-bottom: 5px;
 }
 p {
   text-align: center;
@@ -41,6 +42,7 @@ canvas {
   display: flex;
   justify-content: center;
   gap: 20px;
+  margin-bottom: 20px;
 }
 button {
   padding: 10px 18px;
@@ -92,16 +94,39 @@ button:hover { transform: scale(1.05); }
   color: #fbbf24;
   margin-top: 8px;
 }
+.fact-panel {
+  margin-top: 25px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 12px;
+  padding: 20px;
+}
+.fact-panel h3 {
+  color: #38bdf8;
+  margin-bottom: 12px;
+}
+.fact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  text-align: left;
+}
+.fact {
+  background: rgba(255,255,255,0.08);
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
 </style>
 </head>
 <body>
 <main>
   <h1>☀️ Nuclear Fusion Visualizer</h1>
-  <p>Follow the journey from hydrogen atoms to the incredible power of fusion energy!</p>
+  <p>Explore the stages of hydrogen fusion — the process that powers the stars.</p>
 
   <div class="controls">
-    <button id="startBtn">Start Fusion</button>
-    <button id="resetBtn">Reset</button>
+    <button id="startBtn">▶ Start</button>
+    <button id="pauseBtn">⏸ Pause</button>
+    <button id="resetBtn">🔄 Reset</button>
   </div>
 
   <div style="position:relative;">
@@ -112,8 +137,20 @@ button:hover { transform: scale(1.05); }
 
   <div class="info-panel" id="info">
     <h3>Stage 1: Hydrogen in the Plasma</h3>
-    <p>Hydrogen atoms are zooming through the hot plasma at millions of degrees. They rarely collide, but when they do… magic happens.</p>
-    <div class="energy-counter">Energy Released: 0 J</div>
+    <p>Hydrogen atoms move rapidly inside the plasma at temperatures over 15 million °C. Occasionally, two collide and start something incredible...</p>
+    <div class="energy-counter" id="energyCounter">Energy Released: 0 J</div>
+  </div>
+
+  <div class="fact-panel">
+    <h3>Scientific Facts 🔬</h3>
+    <div class="fact-grid">
+      <div class="fact">🌡️ <b>Temperature:</b> >15 million Kelvin</div>
+      <div class="fact">⚛️ <b>Reaction:</b> 4¹H → ⁴He + 2e⁺ + 2ν + Energy</div>
+      <div class="fact">💥 <b>Mass Loss:</b> ~0.7% converted to energy (E = mc²)</div>
+      <div class="fact">☀️ <b>Sun’s Power Output:</b> 3.8 × 10²⁶ W</div>
+      <div class="fact">🔋 <b>1 g of H fusion:</b> ≈ 20,000 gallons of gasoline</div>
+      <div class="fact">🧠 <b>Key Force:</b> Strong Nuclear Force binds protons together</div>
+    </div>
   </div>
 </main>
 
@@ -123,12 +160,13 @@ const ctx = canvas.getContext("2d");
 const flash = document.getElementById("flash");
 const wave = document.getElementById("wave");
 const info = document.getElementById("info");
-const energyCounter = info.querySelector(".energy-counter");
+const energyCounter = document.getElementById("energyCounter");
 
 let step = 0;
 let particles = [];
 let anim;
-let totalEnergy = 0; // in joules
+let paused = false;
+let totalEnergy = 0;
 
 function resetScene() {
   cancelAnimationFrame(anim);
@@ -137,15 +175,14 @@ function resetScene() {
   totalEnergy = 0;
   energyCounter.textContent = "Energy Released: 0 J";
   step = 0;
+  paused = false;
   particles = [
     {x:250, y:200, vx:0, color:"#60a5fa"},
     {x:550, y:200, vx:0, color:"#60a5fa"}
   ];
   draw();
-  info.innerHTML = `
-    <h3>Stage 1: Hydrogen in the Plasma</h3>
-    <p>Hydrogen atoms are zooming through the hot plasma at millions of degrees. They rarely collide, but when they do… magic happens.</p>
-    <div class="energy-counter">Energy Released: 0 J</div>`;
+  info.querySelector("h3").textContent = "Stage 1: Hydrogen in the Plasma";
+  info.querySelector("p").textContent = "Hydrogen atoms move rapidly inside the plasma at temperatures over 15 million °C. Occasionally, two collide and start something incredible...";
 }
 
 function drawParticle(p) {
@@ -173,64 +210,66 @@ function draw() {
   for (const p of particles) drawParticle(p);
 }
 
+function addEnergy(amount) {
+  totalEnergy += amount;
+  const tnt = (totalEnergy / 4.184e9).toFixed(4);
+  energyCounter.textContent = `Energy Released: ${totalEnergy.toExponential(3)} J (~${tnt} tons TNT)`;
+}
+
 function updateInfo(title, text) {
   info.querySelector("h3").textContent = title;
   info.querySelector("p").textContent = text;
 }
 
-function addEnergy(amount) {
-  totalEnergy += amount;
-  const tntEquivalent = (totalEnergy / 4.184e9).toFixed(5);
-  energyCounter.textContent = `Energy Released: ${totalEnergy.toExponential(3)} J (~${tntEquivalent} tons TNT)`;
-}
-
 function animateFusion() {
+  if (paused) return;
   step++;
-  if (step === 1) updateInfo("Stage 2: Atoms Accelerating", "The hydrogen nuclei accelerate through the plasma, approaching each other at high speeds.");
-  if (step === 60) {
-    particles[0].vx = 2;
-    particles[1].vx = -2;
+
+  // Timed stages
+  if (step === 50) updateInfo("Stage 2: Acceleration", "The hydrogen nuclei accelerate, overcoming electromagnetic repulsion with quantum tunneling.");
+  if (step === 100) {
+    particles[0].vx = 2; particles[1].vx = -2;
   }
 
-  if (step > 60 && step < 130) {
+  if (step > 100 && step < 180) {
     particles.forEach(p => p.x += p.vx);
   }
 
-  if (step === 130) {
+  if (step === 180) {
     flash.style.opacity = 1;
-    setTimeout(() => flash.style.opacity = 0, 400);
-    updateInfo("Stage 3: Quantum Tunneling", "Despite repelling each other, the protons fuse due to quantum tunneling — a quantum miracle!");
+    setTimeout(() => flash.style.opacity = 0, 300);
+    updateInfo("Stage 3: Fusion Ignition", "Two protons fuse into deuterium (¹H + ¹H → ²H + e⁺ + νₑ). A positron and neutrino escape.");
     addEnergy(1e13);
   }
 
-  if (step === 200) {
-    updateInfo("Stage 4: Fusion Ignition", "Two protons have fused to form deuterium (¹H + ¹H → ²H + e⁺ + νₑ). A positron and a neutrino escape, carrying away energy.");
-    addEnergy(5e13);
-  }
-
-  if (step === 270) {
-    flash.style.opacity = 1;
-    setTimeout(() => flash.style.opacity = 0, 500);
-    updateInfo("Stage 5: Chain Reaction", "More hydrogen joins, forming Helium-3, then Helium-4. Energy output grows exponentially!");
-    addEnergy(2e14);
+  if (step === 260) {
+    updateInfo("Stage 4: Helium-3 Formation", "Deuterium nuclei collide with protons, forming helium-3 — releasing more energy each time.");
+    addEnergy(3e13);
   }
 
   if (step === 340) {
     wave.style.opacity = 1;
-    wave.animate([{ transform: 'translate(-50%, -50%) scale(0)', opacity: 1 }, { transform: 'translate(-50%, -50%) scale(8)', opacity: 0 }], { duration: 2000 });
+    wave.animate([{ transform: 'translate(-50%, -50%) scale(0)', opacity: 1 }, { transform: 'translate(-50%, -50%) scale(8)', opacity: 0 }], { duration: 2500 });
     drawHelium(400, 200);
-    updateInfo("Stage 6: Stellar Power Released", "Helium is formed. The missing mass becomes pure energy. This single reaction releases energy equal to 100 million chemical reactions!");
+    flash.style.opacity = 1;
+    setTimeout(() => flash.style.opacity = 0, 500);
+    updateInfo("Stage 5: Helium-4 Creation", "Two helium-3 atoms combine to form stable helium-4 — the key step that powers stars.");
+    addEnergy(2e14);
+  }
+
+  if (step === 460) {
+    updateInfo("Stage 6: Energy Burst", "The lost mass becomes radiant energy — equivalent to 100 million chemical reactions at once!");
     addEnergy(3e14);
   }
 
-  if (step === 440) {
-    updateInfo("Stage 7: The Heart of the Stars", "This is how stars — including our Sun — shine for billions of years, fusing hydrogen into helium and light.");
-    addEnergy(1e15);
+  if (step === 580) {
+    updateInfo("Stage 7: Stellar Power", "This same process in the Sun converts 600 million tons of hydrogen into helium every second.");
+    addEnergy(5e14);
   }
 
-  if (step === 540) {
-    updateInfo("Stage 8: Humanity’s Dream", "If controlled, fusion could power Earth with nearly limitless clean energy. Projects like ITER are making it real.");
-    addEnergy(5e15);
+  if (step === 700) {
+    updateInfo("Stage 8: Humanity’s Future", "Projects like ITER and SPARC aim to replicate this clean, limitless energy on Earth. The power of the stars — in our hands.");
+    addEnergy(1e15);
     cancelAnimationFrame(anim);
     return;
   }
@@ -240,10 +279,11 @@ function animateFusion() {
 }
 
 document.getElementById("startBtn").onclick = () => {
+  paused = false;
   cancelAnimationFrame(anim);
-  step = 0;
   animateFusion();
 };
+document.getElementById("pauseBtn").onclick = () => paused = !paused;
 document.getElementById("resetBtn").onclick = resetScene;
 
 resetScene();
