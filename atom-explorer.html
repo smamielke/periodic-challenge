@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Atom Explorer 🔬 | Periodic Challenge</title>
+<link rel="stylesheet" href="style.css" />
+
+<style>
+/* --- Layout card --- */
+.explorer-wrap{
+  max-width:1100px;margin:40px auto;padding:24px;
+  background:#fff;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.08)
+}
+.explorer-header{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:12px}
+.explorer-title{font-size:1.6rem;font-weight:800}
+.explorer-crumbs{font-size:.95rem;color:#555}
+.controls{display:flex;gap:8px;flex-wrap:wrap}
+.controls button{
+  background:linear-gradient(90deg,#8b5cf6,#ec4899);color:#fff;border:0;
+  padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer
+}
+.controls button:disabled{opacity:.5;cursor:not-allowed}
+.scene{
+  background:radial-gradient(1200px 600px at 50% -200px, #eef2ff, #e0f2fe, #f5e9ff);
+  border-radius:14px;overflow:hidden;position:relative;height:540px
+}
+#stage{width:100%;height:100%}
+.tooltip{
+  position:absolute;left:16px;bottom:16px;right:16px;
+  background:#0f172a;color:#fff;border-radius:12px;padding:12px 14px;
+  font-size:.98rem;line-height:1.4;box-shadow:0 12px 30px rgba(0,0,0,.15)
+}
+.tooltip b{color:#93c5fd}
+.legend{
+  display:flex;gap:10px;flex-wrap:wrap;margin-top:10px
+}
+.badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 10px;font-size:.85rem;font-weight:700}
+.badge .dot{width:10px;height:10px;border-radius:50%}
+.badge.p{background:#fee2e2;color:#991b1b}.badge.p .dot{background:#ef4444}
+.badge.n{background:#e5e7eb;color:#111827}.badge.n .dot{background:#6b7280}
+.badge.e{background:#dbeafe;color:#1e3a8a}.badge.e .dot{background:#3b82f6}
+.badge.u{background:#dcfce7;color:#065f46}.badge.u .dot{background:#22c55e}
+.badge.d{background:#fef3c7;color:#92400e}.badge.d .dot{background:#f59e0b}
+
+/* SVG niceties */
+#stage svg{width:100%;height:100%}
+g.layer{opacity:0;pointer-events:none;transition:opacity .35s ease}
+g.layer.active{opacity:1;pointer-events:auto}
+.orbit{fill:none;stroke:#93c5fd;stroke-width:2;opacity:.55}
+.electron{fill:#3b82f6;filter:drop-shadow(0 3px 6px rgba(59,130,246,.5))}
+.nucleus-glow{filter:drop-shadow(0 8px 24px rgba(168,85,247,.35))}
+.proton{fill:#ef4444}
+.neutron{fill:#6b7280}
+.quark-u{fill:#22c55e}
+.quark-d{fill:#f59e0b}
+
+/* small screens */
+@media (max-width:760px){
+  .scene{height:480px}
+  .explorer-title{font-size:1.3rem}
+}
+</style>
+</head>
+<body>
+
+<main class="explorer-wrap">
+  <div class="explorer-header">
+    <div>
+      <div class="explorer-title">Atom Explorer 🔎</div>
+      <div class="explorer-crumbs" id="crumbs">Atom ▸ Nucleus ▸ Nucleons ▸ Quarks</div>
+    </div>
+    <div class="controls">
+      <button id="backBtn" aria-label="Back one level">⬅ Back</button>
+      <button id="nextBtn" aria-label="Zoom in one level">Zoom In ➡</button>
+      <button id="resetBtn" aria-label="Reset to atom view">Reset</button>
+    </div>
+  </div>
+
+  <div class="scene" role="region" aria-label="Interactive atomic zoom explorer">
+    <div id="stage"></div>
+    <div class="tooltip" id="tip">Click <b>Zoom In</b> or tap parts of the atom to explore layers: Atom → Nucleus → Nucleons → Quarks.</div>
+  </div>
+
+  <div class="legend" aria-hidden="true">
+    <span class="badge p"><span class="dot"></span>Proton (+1)</span>
+    <span class="badge n"><span class="dot"></span>Neutron (0)</span>
+    <span class="badge e"><span class="dot"></span>Electron (−1)</span>
+    <span class="badge u"><span class="dot"></span>Up quark (+2/3)</span>
+    <span class="badge d"><span class="dot"></span>Down quark (−1/3)</span>
+  </div>
+</main>
+
+<script>
+/* ---------- State ---------- */
+let LEVEL = 0; // 0 Atom, 1 Nucleus, 2 Nucleons, 3 Quarks
+
+const stage = document.getElementById('stage');
+const tip   = document.getElementById('tip');
+const crumbs = document.getElementById('crumbs');
+const backBtn = document.getElementById('backBtn');
+const nextBtn = document.getElementById('nextBtn');
+const resetBtn = document.getElementById('resetBtn');
+
+backBtn.onclick = () => setLevel(Math.max(0, LEVEL-1));
+nextBtn.onclick = () => setLevel(Math.min(3, LEVEL+1));
+resetBtn.onclick = () => setLevel(0);
+
+/* ---------- Build SVG once ---------- */
+const svgNS = "http://www.w3.org/2000/svg";
+const svg = document.createElementNS(svgNS,'svg');
+svg.setAttribute('viewBox','0 0 1000 600');
+stage.appendChild(svg);
+
+function make(tag, attrs={}, parent=svg){
+  const el = document.createElementNS(svgNS, tag);
+  for (const [k,v] of Object.entries(attrs)) el.setAttribute(k, v);
+  parent.appendChild(el); return el;
+}
+
+/* Layers */
+const layers = {
+  atom:     make('g',{class:'layer active','data-level':'0'}),
+  nucleus:  make('g',{class:'layer','data-level':'1'}),
+  nucleons: make('g',{class:'layer','data-level':'2'}),
+  quarks:   make('g',{class:'layer','data-level':'3'}),
+};
+
+/* ---------- Level 0: Atom (oxygen-like shell model) ---------- */
+(function drawAtom(){
+  // orbits
+  const orbits=[120,200,280];
+  orbits.forEach(r => make('circle',{cx:500, cy:300, r, class:'orbit'}, layers.atom));
+
+  // electrons (simplified positions)
+  const electrons = [
+    [500,180],[500,420],                // K shell (2)
+    [300,300],[700,300],[500,100],[500,500], // L shell (4 of 6 shown)
+    [220,300],[780,300]                 // M shell (2)
+  ];
+  electrons.forEach(([x,y])=>{
+    const e = make('circle',{cx:x, cy:y, r:10, class:'electron'}, layers.atom);
+    e.addEventListener('click', ()=> setLevel(1)); // click an electron -> zoom
+  });
+
+  // nucleus blob
+  const nuc = make('circle',{cx:500, cy:300, r:80, fill:'#c084fc', opacity:.9, class:'nucleus-glow'}, layers.atom);
+  nuc.style.cursor='pointer';
+  nuc.addEventListener('click', ()=> setLevel(1));
+})();
+
+/* ---------- Level 1: Nucleus overview ---------- */
+(function drawNucleus(){
+  // fuzzy halo
+  make('circle',{cx:500, cy:300, r:170, fill:'#ede9fe', opacity:.5}, layers.nucleus);
+  // pack of nucleons
+  const spots = [
+    [470,260,'p'],[530,260,'n'],
+    [450,300,'n'],[500,300,'p'],[550,300,'n'],
+    [470,340,'p'],[530,340,'n']
+  ];
+  spots.forEach(([x,y,type])=>{
+    const cls = type==='p'?'proton':'neutron';
+    const c = make('circle',{cx:x, cy:y, r:30, class:cls}, layers.nucleus);
+    c.style.cursor='pointer';
+    c.addEventListener('click', ()=> setLevel(2));
+  });
+  // label
+  make('text',{x:500, y:120, 'text-anchor':'middle', fill:'#111827', 'font-size':'22', 'font-weight':'700'}, layers.nucleus)
+    .textContent = 'Nucleus (protons + neutrons)';
+})();
+
+/* ---------- Level 2: Single nucleon (toggle proton/neutron) ---------- */
+(function drawNucleons(){
+  // proton on left
+  make('circle',{cx:380, cy:300, r:70, class:'proton'}, layers.nucleons)
+    .addEventListener('click', ()=> setLevel(3, 'proton'));
+  make('text',{x:380, y:395, 'text-anchor':'middle', fill:'#111827', 'font-size':'18', 'font-weight':'700'}, layers.nucleons).textContent='Proton (+1)';
+
+  // neutron on right
+  make('circle',{cx:620, cy:300, r:70, class:'neutron'}, layers.nucleons)
+    .addEventListener('click', ()=> setLevel(3, 'neutron'));
+  make('text',{x:620, y:395, 'text-anchor':'middle', fill:'#111827', 'font-size':'18', 'font-weight':'700'}, layers.nucleons).textContent='Neutron (0)';
+})();
+
+/* ---------- Level 3: Quarks inside the selected nucleon ---------- */
+let QUARK_MODE = 'proton'; // or 'neutron'
+function drawQuarks(){
+  // clear previous
+  while (layers.quarks.firstChild) layers.quarks.removeChild(layers.quarks.firstChild);
+
+  const caption = QUARK_MODE==='proton'
+    ? 'Proton = up + up + down (uud), charge +1'
+    : 'Neutron = up + down + down (udd), charge 0';
+
+  // big container
+  const R=120;
+  const shell = make('circle',{cx:500, cy:300, r:R, fill:(QUARK_MODE==='proton'?'#fecaca':'#e5e7eb'), stroke:'#111827', 'stroke-width':'2'}, layers.quarks);
+
+  // positions of 3 quarks
+  const pts=[[500,220],[430,360],[570,360]];
+  const types = QUARK_MODE==='proton' ? ['u','u','d'] : ['u','d','d'];
+  types.forEach((t,i)=>{
+    const cls = t==='u'?'quark-u':'quark-d';
+    make('circle',{cx:pts[i][0], cy:pts[i][1], r:32, class:cls}, layers.quarks);
+    make('text',{x:pts[i][0], y:pts[i][1]+6, 'text-anchor':'middle', fill:'#083344', 'font-size':'22','font-weight':'800'}, layers.quarks)
+      .textContent = t.toUpperCase();
+  });
+
+  make('text',{x:500, y:470, 'text-anchor':'middle', fill:'#111827', 'font-size':'18','font-weight':'700'}, layers.quarks).textContent = caption;
+
+  shell.style.cursor='pointer';
+  shell.addEventListener('click', ()=> setLevel(2));
+}
+
+/* ---------- Level switching, tips, crumbs ---------- */
+function setLevel(next, quarkMode){
+  if (typeof quarkMode==='string') QUARK_MODE = quarkMode;
+  LEVEL = next;
+
+  for (const [name,g] of Object.entries(layers)){
+    const lv = parseInt(g.getAttribute('data-level'),10);
+    g.classList.toggle('active', lv===LEVEL);
+  }
+
+  backBtn.disabled = (LEVEL===0);
+  nextBtn.disabled = (LEVEL===3);
+
+  const texts = [
+    'Atom ▸ Nucleus ▸ Nucleons ▸ Quarks',
+    'Nucleus ▸ (click a nucleon to zoom)',
+    'Nucleons ▸ Choose a proton/neutron',
+    'Quarks inside the nucleon'
+  ];
+  crumbs.textContent = texts[LEVEL];
+
+  const tips = [
+    'This is a shell model with electrons orbiting a nucleus. Click the nucleus or an electron, or press “Zoom In”.',
+    'The nucleus contains tightly packed protons and neutrons (collectively: nucleons). Click one to zoom further.',
+    'Select a proton (+1) or neutron (0) to see its quark structure.',
+    'A proton is uud; a neutron is udd. Up quark charge = +2/3, Down quark charge = −1/3.'
+  ];
+  tip.innerHTML = tips[LEVEL].replaceAll('uud','<b>uud</b>').replaceAll('udd','<b>udd</b>');
+
+  if (LEVEL===3) drawQuarks();
+}
+setLevel(0); // init
+</script>
+</body>
+</html>
