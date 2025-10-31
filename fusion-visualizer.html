@@ -8,9 +8,9 @@
 
 <style>
 body {
-  background: radial-gradient(circle at center, #020024, #090979, #00d4ff);
-  font-family: 'Poppins', sans-serif;
+  background: radial-gradient(circle at center, #000010, #0a0a2a);
   color: white;
+  font-family: 'Poppins', sans-serif;
   margin: 0;
   overflow-x: hidden;
 }
@@ -18,23 +18,22 @@ main {
   max-width: 1000px;
   margin: 40px auto;
   background: rgba(255,255,255,0.05);
-  padding: 30px;
   border-radius: 20px;
+  padding: 30px;
   box-shadow: 0 0 50px rgba(0,0,0,0.5);
 }
 h1 {
   text-align: center;
-  font-size: 2.2rem;
-  margin-bottom: 10px;
+  font-size: 2.4rem;
 }
 p {
   text-align: center;
-  opacity: 0.85;
+  opacity: 0.8;
 }
 canvas {
   display: block;
   margin: 40px auto 20px;
-  background: radial-gradient(circle at center, #001, #050026, #000);
+  background: radial-gradient(circle at center, #000015, #01001a, #000);
   border-radius: 16px;
   box-shadow: 0 0 40px rgba(0,0,0,0.8);
 }
@@ -42,7 +41,6 @@ canvas {
   display: flex;
   justify-content: center;
   gap: 20px;
-  margin-bottom: 20px;
 }
 button {
   padding: 10px 18px;
@@ -54,9 +52,8 @@ button {
   cursor: pointer;
   transition: 0.2s;
 }
-button:hover {
-  transform: scale(1.05);
-}
+button:hover { transform: scale(1.05); }
+
 .flash {
   position: absolute;
   top: 0; left: 0;
@@ -64,54 +61,43 @@ button:hover {
   background: radial-gradient(circle, #ffffcc 0%, transparent 70%);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.5s;
+  transition: opacity 0.4s;
 }
+.energy-wave {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(255,255,100,0.7) 0%, transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+}
+
 .info-panel {
   background: rgba(255,255,255,0.07);
-  padding: 18px;
+  padding: 20px;
   border-radius: 12px;
   margin-top: 20px;
   text-align: center;
-  line-height: 1.5;
   font-size: 1.05rem;
-  box-shadow: inset 0 0 20px rgba(255,255,255,0.05);
+  line-height: 1.6;
 }
 .info-panel h3 {
-  margin: 0 0 8px;
   color: #facc15;
 }
-.fact-box {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  text-align: left;
-  margin-top: 20px;
-}
-.fact {
-  background: rgba(255,255,255,0.08);
-  padding: 10px;
-  border-radius: 8px;
-  font-size: 0.95rem;
-}
-.energy-meter {
-  height: 18px;
-  background: rgba(255,255,255,0.2);
-  border-radius: 10px;
-  overflow: hidden;
-  margin-top: 10px;
-}
-.energy-fill {
-  width: 0%;
-  height: 100%;
-  background: linear-gradient(90deg, #facc15, #f97316, #ef4444);
-  transition: width 1.5s ease;
+.energy-counter {
+  font-family: 'Courier New', monospace;
+  font-size: 1.2rem;
+  color: #fbbf24;
+  margin-top: 8px;
 }
 </style>
 </head>
 <body>
 <main>
   <h1>☀️ Nuclear Fusion Visualizer</h1>
-  <p>Watch hydrogen nuclei fuse into helium and release the power of the Sun!</p>
+  <p>Follow the journey from hydrogen atoms to the incredible power of fusion energy!</p>
 
   <div class="controls">
     <button id="startBtn">Start Fusion</button>
@@ -121,22 +107,13 @@ button:hover {
   <div style="position:relative;">
     <canvas id="fusionCanvas" width="800" height="400"></canvas>
     <div class="flash" id="flash"></div>
+    <div class="energy-wave" id="wave"></div>
   </div>
 
   <div class="info-panel" id="info">
-    <h3>Step 1: Hydrogen Atoms in Motion</h3>
-    <p>At extreme temperatures (~15 million °C), hydrogen nuclei move rapidly inside a plasma. Let's see what happens when they collide!</p>
-    <div class="energy-meter"><div id="energy" class="energy-fill"></div></div>
-  </div>
-
-  <div class="info-panel">
-    <h3>Scientific Facts 🔬</h3>
-    <div class="fact-box">
-      <div class="fact">🌡️ <b>Temperature:</b> ~15 million K</div>
-      <div class="fact">⚛️ <b>Reaction:</b> 4H → He + 2e⁺ + 2ν + Energy</div>
-      <div class="fact">💥 <b>Mass Loss:</b> ~0.7% becomes energy (E = mc²)</div>
-      <div class="fact">☀️ <b>Sun's Output:</b> ~3.8 × 10²⁶ watts</div>
-    </div>
+    <h3>Stage 1: Hydrogen in the Plasma</h3>
+    <p>Hydrogen atoms are zooming through the hot plasma at millions of degrees. They rarely collide, but when they do… magic happens.</p>
+    <div class="energy-counter">Energy Released: 0 J</div>
   </div>
 </main>
 
@@ -144,27 +121,31 @@ button:hover {
 const canvas = document.getElementById("fusionCanvas");
 const ctx = canvas.getContext("2d");
 const flash = document.getElementById("flash");
+const wave = document.getElementById("wave");
 const info = document.getElementById("info");
-const energyBar = document.getElementById("energy");
+const energyCounter = info.querySelector(".energy-counter");
 
 let step = 0;
 let particles = [];
-let animation;
+let anim;
+let totalEnergy = 0; // in joules
 
 function resetScene() {
-  cancelAnimationFrame(animation);
-  step = 0;
+  cancelAnimationFrame(anim);
   flash.style.opacity = 0;
-  energyBar.style.width = "0%";
+  wave.style.opacity = 0;
+  totalEnergy = 0;
+  energyCounter.textContent = "Energy Released: 0 J";
+  step = 0;
   particles = [
     {x:250, y:200, vx:0, color:"#60a5fa"},
     {x:550, y:200, vx:0, color:"#60a5fa"}
   ];
   draw();
   info.innerHTML = `
-    <h3>Step 1: Hydrogen Atoms in Motion</h3>
-    <p>At extreme temperatures (~15 million °C), hydrogen nuclei move rapidly inside a plasma. Let's see what happens when they collide!</p>
-    <div class="energy-meter"><div id="energy" class="energy-fill" style="width:0%;"></div></div>`;
+    <h3>Stage 1: Hydrogen in the Plasma</h3>
+    <p>Hydrogen atoms are zooming through the hot plasma at millions of degrees. They rarely collide, but when they do… magic happens.</p>
+    <div class="energy-counter">Energy Released: 0 J</div>`;
 }
 
 function drawParticle(p) {
@@ -192,43 +173,74 @@ function draw() {
   for (const p of particles) drawParticle(p);
 }
 
+function updateInfo(title, text) {
+  info.querySelector("h3").textContent = title;
+  info.querySelector("p").textContent = text;
+}
+
+function addEnergy(amount) {
+  totalEnergy += amount;
+  const tntEquivalent = (totalEnergy / 4.184e9).toFixed(5);
+  energyCounter.textContent = `Energy Released: ${totalEnergy.toExponential(3)} J (~${tntEquivalent} tons TNT)`;
+}
+
 function animateFusion() {
   step++;
-  if (step === 1) {
-    info.querySelector("h3").textContent = "Step 2: Overcoming Repulsion";
-    info.querySelector("p").textContent = "Quantum tunneling allows protons to get close enough to fuse.";
+  if (step === 1) updateInfo("Stage 2: Atoms Accelerating", "The hydrogen nuclei accelerate through the plasma, approaching each other at high speeds.");
+  if (step === 60) {
     particles[0].vx = 2;
     particles[1].vx = -2;
   }
 
-  if (step > 1 && step < 100) {
+  if (step > 60 && step < 130) {
     particles.forEach(p => p.x += p.vx);
   }
 
-  if (step === 100) {
+  if (step === 130) {
     flash.style.opacity = 1;
     setTimeout(() => flash.style.opacity = 0, 400);
-    particles = [{x:400, y:200, color:"#facc15", type:"He"}];
-    energyBar.style.width = "100%";
-    info.querySelector("h3").textContent = "Step 3: Fusion Occurs!";
-    info.querySelector("p").textContent = "Two protons fuse into helium, releasing enormous energy as light and heat.";
+    updateInfo("Stage 3: Quantum Tunneling", "Despite repelling each other, the protons fuse due to quantum tunneling — a quantum miracle!");
+    addEnergy(1e13);
   }
 
-  if (step === 220) {
-    info.querySelector("h3").textContent = "Step 4: The Power of Stars";
-    info.querySelector("p").textContent = "This process fuels every star — turning tiny atoms into light that reaches Earth.";
+  if (step === 200) {
+    updateInfo("Stage 4: Fusion Ignition", "Two protons have fused to form deuterium (¹H + ¹H → ²H + e⁺ + νₑ). A positron and a neutrino escape, carrying away energy.");
+    addEnergy(5e13);
+  }
+
+  if (step === 270) {
     flash.style.opacity = 1;
-    setTimeout(() => flash.style.opacity = 0, 600);
-    cancelAnimationFrame(animation);
+    setTimeout(() => flash.style.opacity = 0, 500);
+    updateInfo("Stage 5: Chain Reaction", "More hydrogen joins, forming Helium-3, then Helium-4. Energy output grows exponentially!");
+    addEnergy(2e14);
+  }
+
+  if (step === 340) {
+    wave.style.opacity = 1;
+    wave.animate([{ transform: 'translate(-50%, -50%) scale(0)', opacity: 1 }, { transform: 'translate(-50%, -50%) scale(8)', opacity: 0 }], { duration: 2000 });
+    drawHelium(400, 200);
+    updateInfo("Stage 6: Stellar Power Released", "Helium is formed. The missing mass becomes pure energy. This single reaction releases energy equal to 100 million chemical reactions!");
+    addEnergy(3e14);
+  }
+
+  if (step === 440) {
+    updateInfo("Stage 7: The Heart of the Stars", "This is how stars — including our Sun — shine for billions of years, fusing hydrogen into helium and light.");
+    addEnergy(1e15);
+  }
+
+  if (step === 540) {
+    updateInfo("Stage 8: Humanity’s Dream", "If controlled, fusion could power Earth with nearly limitless clean energy. Projects like ITER are making it real.");
+    addEnergy(5e15);
+    cancelAnimationFrame(anim);
     return;
   }
 
   draw();
-  animation = requestAnimationFrame(animateFusion);
+  anim = requestAnimationFrame(animateFusion);
 }
 
 document.getElementById("startBtn").onclick = () => {
-  cancelAnimationFrame(animation);
+  cancelAnimationFrame(anim);
   step = 0;
   animateFusion();
 };
