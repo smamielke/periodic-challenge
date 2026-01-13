@@ -16,7 +16,7 @@
         <priority>0.95</priority>
     </url>
     
-    <!-- Trivia page (fixed typo from "trixia") -->
+    <!-- Trivia page -->
     <url>
         <loc>https://smallelke.github.io/periodic-challenge/trivia.html</loc>
         <lastmod>2025-11-04</lastmod>
@@ -24,6 +24,7 @@
         <priority>0.8</priority>
     </url>
     
+    <!-- Learn page -->
     <url>
         <loc>https://smallelke.github.io/periodic-challenge/learn.html</loc>
         <lastmod>2025-11-04</lastmod>
@@ -31,6 +32,7 @@
         <priority>0.8</priority>
     </url>
     
+    <!-- About page -->
     <url>
         <loc>https://smallelke.github.io/periodic-challenge/about.html</loc>
         <lastmod>2025-11-04</lastmod>
