@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <!-- Home -->
     <url>
-        <loc>https://smallelke.github.io/periodic-challenge/</loc>
+        <loc>https://smamielke.github.io/periodic-challenge/</loc>
         <lastmod>2025-11-04</lastmod>
         <changefreq>daily</changefreq>
         <priority>1.0</priority>
@@ -10,7 +10,7 @@
     
     <!-- Game & Interactive Features -->
     <url>
-        <loc>https://smallelke.github.io/periodic-challenge/game.html</loc>
+        <loc>https://smamielke.github.io/periodic-challenge/game.html</loc>
         <lastmod>2025-11-04</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.95</priority>
@@ -18,7 +18,7 @@
     
     <!-- Trivia page -->
     <url>
-        <loc>https://smallelke.github.io/periodic-challenge/trivia.html</loc>
+        <loc>https://smamielke.github.io/periodic-challenge/trivia.html</loc>
         <lastmod>2025-11-04</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
@@ -26,7 +26,7 @@
     
     <!-- Learn page -->
     <url>
-        <loc>https://smallelke.github.io/periodic-challenge/learn.html</loc>
+        <loc>https://smamielke.github.io/periodic-challenge/learn.html</loc>
         <lastmod>2025-11-04</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
@@ -34,7 +34,7 @@
     
     <!-- About page -->
     <url>
-        <loc>https://smallelke.github.io/periodic-challenge/about.html</loc>
+        <loc>https://smamielke.github.io/periodic-challenge/about.html</loc>
         <lastmod>2025-11-04</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.5</priority>
