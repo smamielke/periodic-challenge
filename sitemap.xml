@@ -16,8 +16,7 @@
         <priority>0.95</priority>
     </url>
     
-    <!-- Add other pages following the same format -->
-    <!-- Example for additional pages: -->
+    <!-- Trivia page (fixed typo from "trixia") -->
     <url>
         <loc>https://smallelke.github.io/periodic-challenge/trivia.html</loc>
         <lastmod>2025-11-04</lastmod>
